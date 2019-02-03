@@ -23,8 +23,6 @@ class Planet extends React.Component {
         let xPos = this.props.details.loc.x;
         let yPos = this.props.details.loc.y;
 
-        console.log(this.props.planetView);
-
         if (this.showName()) {
             return (
                 <g className="node" transform={ `translate(${xPos}, ${yPos})` }>
@@ -46,7 +44,7 @@ class Planet extends React.Component {
 
 const mapStateToProps = (state) => {
     return { 
-        zoomLevel: state.zoomLevel,
+        zoomLevel: parseInt(state.zoomLevel),
         planetView: state.planetView
     };
 };

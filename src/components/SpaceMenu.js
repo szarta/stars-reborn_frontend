@@ -1,33 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { modifyPlanetView } from '../actions';
+import { modifyPlanetView, modifyZoomLevel } from '../actions';
 
 class SpaceMenu extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = { planetSelectionIndex: "0" };
-    }
-
-    componentDidMount() {
-        //this.dropdownRef.current.dropDown();
-    }
-
-    planetViewChanged = (e) => {
-        let newView = e.target.value;
-        this.setState({ planetSelectionIndex: newView});
-        this.props.modifyPlanetView(newView);
-    }
+    zoomLevelChanged = (e) => { this.props.modifyZoomLevel(e.target.value); }
+    planetViewChanged = (e) => { this.props.modifyPlanetView(e.target.value); }
 
     render() {
         return (
             <div className="ui menu">
-                <select className="ui dropdown" value={this.state.planetSelectionIndex} onChange={this.planetViewChanged}>
+                <select className="ui dropdown" value={this.props.planetView} onChange={this.planetViewChanged}>
                     <option value="0">Normal View</option>
                     <option value="1">Surface Minerals View</option>
                     <option value="2">Mineral Concentration View</option>
+                    <option value="3">Planet Value View</option>
+                    <option value="4">Population View</option>
+                    <option value="5">No Player Info View</option>
                 </select>
+                <select className="ui dropdown" value={this.props.zoomLevel} onChange={this.zoomLevelChanged}>
+                    <option value="25">25%</option>
+                    <option value="38">38%</option>
+                    <option value="50">50%</option>
+                    <option value="100">100%</option>
+                    <option value="125">125%</option>
+                    <option value="150">150%</option>
+                    <option value="200">200%</option>
+                    <option value="400">400%</option>
+                </select>
+
             </div>
         );
     }
@@ -35,8 +35,9 @@ class SpaceMenu extends React.Component {
 
 const mapStateToProps = (state) => {
     return { 
-        zoomLevel: state.zoomLevel 
+        zoomLevel: state.zoomLevel,
+        planetView: state.planetView
     };
 };
 
-export default connect(mapStateToProps, { modifyPlanetView } )(SpaceMenu);
+export default connect(mapStateToProps, { modifyPlanetView, modifyZoomLevel } )(SpaceMenu);

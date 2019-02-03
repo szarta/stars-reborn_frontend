@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-const planetViewReducer = (viewType = 0, action) => {
+const planetViewReducer = (viewType = "0", action) => {
     switch (action.type) {
         case 'MODIFY_PLANET_VIEW':
             return action.payload;
@@ -9,7 +9,7 @@ const planetViewReducer = (viewType = 0, action) => {
     }
 }
 
-const zoomLevelReducer = (zoomLevel = 100, action) => {
+const zoomLevelReducer = (zoomLevel = "100", action) => {
     switch (action.type) {
         case 'MODIFY_ZOOM':
             return action.payload;

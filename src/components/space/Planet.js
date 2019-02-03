@@ -20,8 +20,8 @@ class Planet extends React.Component {
     }
 
     render() {
-        let xPos = this.props.details.loc.x;
-        let yPos = this.props.details.loc.y;
+        let xPos = this.props.details.loc.x * this.props.zoomMultiplier;
+        let yPos = this.props.details.loc.y * this.props.zoomMultiplier;
 
         if (this.showName()) {
             return (
@@ -43,8 +43,48 @@ class Planet extends React.Component {
 };
 
 const mapStateToProps = (state) => {
+    let zoomMultiplier = 1.0;
+    switch(state.zoomLevel) {
+        case "25":
+            zoomMultiplier = 0.25;
+            break;
+
+        case "38":
+            zoomMultiplier = 0.38;
+            break;
+
+        case "50":
+            zoomMultiplier = 0.50;
+            break;
+
+        case "100":
+            zoomMultiplier = 1.0;
+            break;
+
+        case "125":
+            zoomMultiplier = 1.25;
+            break;
+
+        case "150":
+            zoomMultiplier = 1.5;
+            break;
+
+        case "200":
+            zoomMultiplier = 2.0;
+            break;
+
+        case "400":
+            zoomMultiplier = 4.0;
+            break;
+
+        default:
+            zoomMultiplier = 1.0;
+    }
+
+
     return { 
         zoomLevel: parseInt(state.zoomLevel),
+        zoomMultiplier: zoomMultiplier,
         planetView: state.planetView
     };
 };

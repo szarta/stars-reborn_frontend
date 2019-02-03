@@ -25,12 +25,15 @@ class Universe extends React.Component {
             );
         }
 
-        const boundWidth = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
-        const boundHeight = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
+        const spaceWidth = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
+        const spaceHeight = this.props.space.bound.yMax * this.props.zoomMultiplier + 25;
+
+          //  <rect x="0" y="0" width={boundaryWidth} height={boundaryHeight} fill="gray" />
+
         return (
-            <div>
-            <svg width={boundWidth} height={boundHeight}>
-            <rect x="0" y="0" width={boundWidth} height={boundHeight} fill="black" />
+            <div style={{overflow: 'auto', height: '500px', width: '500px'}}>
+            <svg width={spaceWidth} height={spaceHeight}>
+            <rect x="0" y="0" width={spaceWidth} height={spaceHeight} fill="black" />
             {this.renderPlanets()}
             </svg>
             </div>
@@ -41,20 +44,36 @@ class Universe extends React.Component {
 const mapStateToProps = (state) => {
     let zoomMultiplier = 1.0;
     switch(state.zoomLevel) {
-        case 25:
+        case "25":
             zoomMultiplier = 0.25;
             break;
 
-        case 38:
+        case "38":
             zoomMultiplier = 0.38;
             break;
 
-        case 50:
+        case "50":
             zoomMultiplier = 0.50;
             break;
 
-        case 100:
+        case "100":
             zoomMultiplier = 1.0;
+            break;
+
+        case "125":
+            zoomMultiplier = 1.25;
+            break;
+
+        case "150":
+            zoomMultiplier = 1.5;
+            break;
+
+        case "200":
+            zoomMultiplier = 2.0;
+            break;
+
+        case "400":
+            zoomMultiplier = 4.0;
             break;
 
         default:
@@ -63,7 +82,6 @@ const mapStateToProps = (state) => {
 
     return { 
         zoomMultiplier: zoomMultiplier,
-        zoomLevel: state.zoomLevel,
         space: state.space
     };
 };

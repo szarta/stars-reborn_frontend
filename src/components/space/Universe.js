@@ -1,8 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { retrieveSpace } from '../../actions';
 import Planet from './Planet';
 
 class Universe extends React.Component {
+    componentDidMount() {
+        this.props.retrieveSpace();
+    }
+
     renderPlanets() {
         return this.props.space.planets.map( (planet) => {
             return (
@@ -12,6 +17,14 @@ class Universe extends React.Component {
     }
 
     render() {
+        if (!this.props.space) {
+            return (
+                <div>
+                Loading...
+                </div>
+            );
+        }
+
         const boundWidth = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
         const boundHeight = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
         return (
@@ -55,4 +68,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Universe);
+export default connect(mapStateToProps, { retrieveSpace } )(Universe);

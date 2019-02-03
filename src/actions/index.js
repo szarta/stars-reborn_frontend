@@ -35,3 +35,10 @@ export const modifyZoomLevel = (zoomLevel) => {
         payload: zoomLevel
     }
 };
+
+export const modifyPlanetView = (planetViewType) => {
+    return {
+        type: 'MODIFY_PLANET_VIEW',
+        payload: planetViewType
+    }
+};

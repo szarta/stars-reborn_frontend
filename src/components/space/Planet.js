@@ -19,6 +19,57 @@ class Planet extends React.Component {
         }
     }
 
+    renderNormalPlanetCircle() {
+        let outlineColor = "";
+        let outline = null;
+        let starbaseIcon = null;
+        if (this.props.details.currentData === true) {
+            if (this.props.details.relatedFriendlyFleets.length && this.props.details.relatedEnemyFleets.length) {
+                outlineColor = 'purple';
+            } else if(this.props.details.relatedFriendlyFleets.length) {
+                outlineColor = 'white';
+            } else if(this.props.details.relatedEnemyFleets.length) {
+                outlineColor = 'red';
+            }
+        }
+
+        if (outlineColor) {
+            outline = <circle r='10' stroke={outlineColor} strokeWidth='1' fill='none'/>;
+        }
+
+        if (this.props.details.relatedStarbase) {
+            starbaseIcon = <circle cx='6' cy='-4' r='3' fill='white' />;
+        }
+
+        return (
+            {outline},
+            {starbaseIcon}
+        );
+    }
+
+    renderPlanet() {
+        switch (this.props.planetView) {
+            case 0:
+                if (this.props.details.seenBefore === false) {
+                    return (
+                        <rect width="5" height="5" fill="grey" />
+                    );
+                }
+                else {
+                    return this.renderNormalPlanetCircle();
+                }
+                break;
+
+            case 5:
+                return (
+                    <rect width="5" height="5" fill="grey" />
+                );
+
+            default:
+                break;
+        }
+    }
+
     render() {
         let xPos = this.props.details.loc.x * this.props.zoomMultiplier;
         let yPos = this.props.details.loc.y * this.props.zoomMultiplier;
@@ -26,7 +77,7 @@ class Planet extends React.Component {
         if (this.showName()) {
             return (
                 <g className="node" transform={ `translate(${xPos}, ${yPos})` }>
-                <rect width="5" height="5" fill="grey" />
+                {this.renderPlanet()}
                 <text style={{fill:'#ffffff', stroke: 'none', textAnchor: 'middle', fontSize: `${this.getFontSize()}px`, fontFamily: 'Arial', fontWeight: 'bold'}} transform='translate(0,20)'>
                     {this.props.details.name}
                 </text>
@@ -85,7 +136,7 @@ const mapStateToProps = (state) => {
     return { 
         zoomLevel: parseInt(state.zoomLevel),
         zoomMultiplier: zoomMultiplier,
-        planetView: state.planetView
+        planetView: parseInt(state.planetView)
     };
 };
 

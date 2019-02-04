@@ -11,7 +11,6 @@ export const retrieveSpace = () => async dispatch => {
         }
     );
 
-    console.log(response.data);
     dispatch( { type: 'FETCH_SPACE', payload: response.data } );
 };
 

@@ -18,21 +18,21 @@ const zoomLevelReducer = (zoomLevel = "100", action) => {
     }
 }
 
-const selectedSpaceObjectReducer = (selectedId = null, action) => {
+const selectedSpaceObjectReducer = (selected = null, action) => {
     switch (action.type) {
         case 'SELECT_OBJECT':
             return action.payload;
         default:
-            return selectedId;
+            return selected;
     }
 };
 
-const focusedSpaceObjectReducer = (focusId = null, action) => {
+const focusedSpaceObjectReducer = (focused = null, action) => {
     switch (action.type) {
         case 'FOCUS_OBJECT':
             return action.payload;
         default:
-            return focusId;
+            return focused;
     }
 };
 
@@ -49,6 +49,6 @@ export default combineReducers({
     space: spaceReducer,
     planetView: planetViewReducer,
     zoomLevel: zoomLevelReducer,
-    selectedId: selectedSpaceObjectReducer,
-    focusedId: focusedSpaceObjectReducer
+    selectedObject: selectedSpaceObjectReducer,
+    focusedObject: focusedSpaceObjectReducer
 });

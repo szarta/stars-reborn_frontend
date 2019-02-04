@@ -1,7 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { PlanetViewEnum, zoomLevelToMultiplier } from '../../gameUtils';
+import { selectSpaceObject, focusSpaceObject } from '../../actions';
 
 class Planet extends React.Component {
+    planetClicked = (e) => {
+        console.log(this.props.selectedId);
+        let selection = { "planet": this.props.details.id };
+
+        if (this.props.selectedId === this.props.details.id) {
+            console.log("focusing the id " + this.props.details.id );
+            this.props.focusSpaceObject(selection);
+        } else {
+            console.log("selecting the id " + this.props.details.id );
+            this.props.selectSpaceObject(selection);
+        }
+    }
+
     getFontSize() {
         if (this.props.zoomLevel < 100) {
             return 11;
@@ -19,125 +34,129 @@ class Planet extends React.Component {
         }
     }
 
-    renderNormalPlanetCircle() {
-        let outlineColor = "";
-        let outline = null;
-        let starbaseIcon = null;
-        if (this.props.details.currentData === true) {
-            if (this.props.details.relatedFriendlyFleets.length && this.props.details.relatedEnemyFleets.length) {
-                outlineColor = 'purple';
-            } else if(this.props.details.relatedFriendlyFleets.length) {
-                outlineColor = 'white';
-            } else if(this.props.details.relatedEnemyFleets.length) {
-                outlineColor = 'red';
+    hasRelatedEnemyFleets() {
+        if('relatedEnemyFleets' in this.props.details) {
+            if(this.props.details.relatedEnemyFleets.length > 0) {
+                return true;
             }
         }
 
-        if (outlineColor) {
-            outline = <circle r='10' stroke={outlineColor} strokeWidth='1' fill='none'/>;
+        return false;
+    }
+
+    hasRelatedFriendlyFleets() {
+        if('relatedFriendlyFleets' in this.props.details) {
+            if(this.props.details.relatedFriendlyFleets.length > 0) {
+                return true;
+            }
         }
 
-        if (this.props.details.relatedStarbase) {
-            starbaseIcon = <circle cx='6' cy='-4' r='3' fill='white' />;
+        return false;
+    }
+
+
+    hasOutline() {
+        return (this.hasRelatedEnemyFleets() || this.hasRelatedFriendlyFleets());
+    }
+
+    hasStarbase() {
+        if('relatedStarbase' in this.props.details) {
+            return this.props.details.relatedStarbase;
         }
 
+        return false;
+    }
+
+    outlineColor() {
+        if (this.hasRelatedEnemyFleets() && this.hasRelatedFriendlyFleets()) {
+            return 'purple';
+        } else if(this.hasRelatedFriendlyFleets()) {
+            return 'white';
+        } else if(this.hasRelatedEnemyFleets()) {
+            return 'red';
+        }
+
+        return 'black';
+    }
+
+    renderNormalViewPlanet() {
         return (
-            {outline},
-            {starbaseIcon}
+            <g className="planet">
+                <circle r="5" stroke="#366b01" strokeWidth="2" fill="#05ff00" />
+                {this.hasOutline() ? <circle r='10' stroke={this.outlineColor()} strokeWidth='1' fill='none'/> : null},
+                {this.hasStarbase() ? <circle cx='6' cy='-4' r='3' fill='white' /> : null}
+            </g>
         );
     }
 
     renderPlanet() {
-        switch (this.props.planetView) {
-            case 0:
-                if (this.props.details.seenBefore === false) {
-                    return (
-                        <rect width="5" height="5" fill="grey" />
-                    );
-                }
-                else {
-                    return this.renderNormalPlanetCircle();
-                }
-                break;
+        if (this.props.details.seenBefore === false) {
+            return (
+                <rect width="5" height="5" fill="grey" />
+            );
+        }
 
-            case 5:
+        switch (this.props.planetView) {
+            case PlanetViewEnum.NORMAL:
+                return this.renderNormalViewPlanet();
+
+            case PlanetViewEnum.NO_INFO:
                 return (
                     <rect width="5" height="5" fill="grey" />
                 );
 
             default:
-                break;
+                return null;
         }
     }
 
-    render() {
-        let xPos = this.props.details.loc.x * this.props.zoomMultiplier;
-        let yPos = this.props.details.loc.y * this.props.zoomMultiplier;
-
+    renderName() {
         if (this.showName()) {
             return (
-                <g className="node" transform={ `translate(${xPos}, ${yPos})` }>
-                {this.renderPlanet()}
-                <text style={{fill:'#ffffff', stroke: 'none', textAnchor: 'middle', fontSize: `${this.getFontSize()}px`, fontFamily: 'Arial', fontWeight: 'bold'}} transform='translate(0,20)'>
+                <text
+                    style={{
+                        fill:'#ffffff',
+                        stroke: 'none',
+                        textAnchor: 'middle',
+                        fontSize: `${this.getFontSize()}px`,
+                        fontFamily: 'Arial',
+                        fontWeight: 'bold'}}
+                    transform='translate(0,20)'
+                >
                     {this.props.details.name}
                 </text>
-                </g>
-            );
-        } else {
-            return (
-                <g className="node" transform={ `translate(${xPos}, ${yPos})` }>
-                <rect width="5" height="5" fill="grey" />
-                </g>
             );
         }
+
+        return null;
+    }
+
+    render() {
+        let xPos = (this.props.details.loc.x - 975) * this.props.zoomMultiplier;
+        let yPos = (this.props.details.loc.y - 975) * this.props.zoomMultiplier;
+
+        return (
+            <g className="node" onClick={this.planetClicked} transform={ `translate(${xPos}, ${yPos})` }>
+                {this.renderPlanet()}
+                {this.renderName()}
+            </g>
+        );
     }
 };
 
 const mapStateToProps = (state) => {
-    let zoomMultiplier = 1.0;
-    switch(state.zoomLevel) {
-        case "25":
-            zoomMultiplier = 0.25;
-            break;
+    let zoomMultiplier = zoomLevelToMultiplier(state.zoomLevel);
 
-        case "38":
-            zoomMultiplier = 0.38;
-            break;
+    let selectedId = (state.selectedObject && 'planet' in state.selectedObject ) ? state.selectedObject.planet : -1;
+    let focusedId = (state.focusedObject && 'planet' in state.focusedObject ) ? state.focusedObject.planet : -1;
 
-        case "50":
-            zoomMultiplier = 0.50;
-            break;
-
-        case "100":
-            zoomMultiplier = 1.0;
-            break;
-
-        case "125":
-            zoomMultiplier = 1.25;
-            break;
-
-        case "150":
-            zoomMultiplier = 1.5;
-            break;
-
-        case "200":
-            zoomMultiplier = 2.0;
-            break;
-
-        case "400":
-            zoomMultiplier = 4.0;
-            break;
-
-        default:
-            zoomMultiplier = 1.0;
-    }
-
-
-    return { 
+    return {
+        selectedId: selectedId,
+        focusedId: focusedId,
         zoomLevel: parseInt(state.zoomLevel),
         zoomMultiplier: zoomMultiplier,
         planetView: parseInt(state.planetView)
     };
 };
 
-export default connect(mapStateToProps)(Planet);
+export default connect(mapStateToProps, { selectSpaceObject, focusSpaceObject })(Planet);

@@ -19,20 +19,53 @@
  *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  *  DEALINGS IN THE SOFTWARE.
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+export const PlanetViewEnum = {
+    NORMAL: 0,
+    SURFACE_MINERALS: 2,
+    MINERAL_CONCENTRATION: 3,
+    PLANET_VALUE: 4,
+    POPULATION: 5,
+    NO_INFO: 6,
+};
 
-import App from './components/App';
-import reducers from './reducers';
+export const zoomLevelToMultiplier = (level) => {
+    let zoomMultiplier;
+    switch(level) {
+        case "25":
+            zoomMultiplier = 0.25;
+            break;
 
-const store = createStore(reducers, applyMiddleware(thunk));
+        case "38":
+            zoomMultiplier = 0.38;
+            break;
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.querySelector('#root')
-);
+        case "50":
+            zoomMultiplier = 0.50;
+            break;
+
+        case "100":
+            zoomMultiplier = 1.0;
+            break;
+
+        case "125":
+            zoomMultiplier = 1.25;
+            break;
+
+        case "150":
+            zoomMultiplier = 1.5;
+            break;
+
+        case "200":
+            zoomMultiplier = 2.0;
+            break;
+
+        case "400":
+            zoomMultiplier = 4.0;
+            break;
+
+        default:
+            zoomMultiplier = 1.0;
+    }
+
+    return zoomMultiplier;
+}

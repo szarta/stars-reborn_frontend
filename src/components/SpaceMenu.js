@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { modifyPlanetView, modifyZoomLevel } from '../actions';
+import { PlanetViewEnum } from '../gameUtils';
 
 class SpaceMenu extends React.Component {
     zoomLevelChanged = (e) => { this.props.modifyZoomLevel(e.target.value); }
@@ -10,12 +11,12 @@ class SpaceMenu extends React.Component {
         return (
             <div className="ui menu">
                 <select className="ui dropdown" value={this.props.planetView} onChange={this.planetViewChanged}>
-                    <option value="0">Normal View</option>
-                    <option value="1">Surface Minerals View</option>
-                    <option value="2">Mineral Concentration View</option>
-                    <option value="3">Planet Value View</option>
-                    <option value="4">Population View</option>
-                    <option value="5">No Player Info View</option>
+                    <option value={PlanetViewEnum.NORMAL}>Normal View</option>
+                    <option value={PlanetViewEnum.SURFACE_MINERALS}>Surface Minerals View</option>
+                    <option value={PlanetViewEnum.MINERAL_CONCENTRATION}>Mineral Concentration View</option>
+                    <option value={PlanetViewEnum.PLANET_VALUE}>Planet Value View</option>
+                    <option value={PlanetViewEnum.POPULATION}>Population View</option>
+                    <option value={PlanetViewEnum.NO_INFO}>No Player Info View</option>
                 </select>
                 <select className="ui dropdown" value={this.props.zoomLevel} onChange={this.zoomLevelChanged}>
                     <option value="25">25%</option>

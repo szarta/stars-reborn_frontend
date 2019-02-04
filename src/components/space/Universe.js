@@ -1,7 +1,31 @@
+/*
+ *  Copyright 2019 Brandon Arrendondo
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),
+ *  to deal in the Software without restriction, including without limitation
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ *  and/or sell copies of the Software, and to permit persons to whom the
+ *  Software is furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ *  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ *  DEALINGS IN THE SOFTWARE.
+ */
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { retrieveSpace } from '../../actions';
 import Planet from './Planet';
+import { zoomLevelToMultiplier } from '../../gameUtils';
+
 
 class Universe extends React.Component {
     componentDidMount() {
@@ -25,60 +49,22 @@ class Universe extends React.Component {
             );
         }
 
-        const spaceWidth = this.props.space.bound.xMax * this.props.zoomMultiplier + 25;
-        const spaceHeight = this.props.space.bound.yMax * this.props.zoomMultiplier + 25;
-
-          //  <rect x="0" y="0" width={boundaryWidth} height={boundaryHeight} fill="gray" />
+        const spaceWidth = this.props.space.bound.xMax * this.props.zoomMultiplier + 50;
+        const spaceHeight = this.props.space.bound.yMax * this.props.zoomMultiplier + 50;
 
         return (
-            <div style={{overflow: 'auto', height: '500px', width: '500px'}}>
-            <svg width={spaceWidth} height={spaceHeight}>
-            <rect x="0" y="0" width={spaceWidth} height={spaceHeight} fill="black" />
-            {this.renderPlanets()}
-            </svg>
+            <div style={{overflow: 'auto', height: '80%'}}>
+                <svg width={spaceWidth} height={spaceHeight}>
+                    <rect x="0" y="0" width={spaceWidth} height={spaceHeight} fill="black" />
+                    {this.renderPlanets()}
+                </svg>
             </div>
         );
     }
 };
 
 const mapStateToProps = (state) => {
-    let zoomMultiplier = 1.0;
-    switch(state.zoomLevel) {
-        case "25":
-            zoomMultiplier = 0.25;
-            break;
-
-        case "38":
-            zoomMultiplier = 0.38;
-            break;
-
-        case "50":
-            zoomMultiplier = 0.50;
-            break;
-
-        case "100":
-            zoomMultiplier = 1.0;
-            break;
-
-        case "125":
-            zoomMultiplier = 1.25;
-            break;
-
-        case "150":
-            zoomMultiplier = 1.5;
-            break;
-
-        case "200":
-            zoomMultiplier = 2.0;
-            break;
-
-        case "400":
-            zoomMultiplier = 4.0;
-            break;
-
-        default:
-            zoomMultiplier = 1.0;
-    }
+    let zoomMultiplier = zoomLevelToMultiplier(state.zoomLevel);
 
     return { 
         zoomMultiplier: zoomMultiplier,

@@ -89,6 +89,32 @@ class Planet extends React.Component {
         );
     }
 
+    renderPlanetValueViewPlanet() {
+        if (!('currentValue' in this.props.details)) {
+            return (
+                <rect width="5" height="5" fill="grey" />
+            );
+        }
+
+        if (!('potentialValue' in this.props.details)) {
+            return (
+                <rect width="5" height="5" fill="grey" />
+            );
+        }
+
+        if (this.props.details.potentialValue < 0) {
+            let radius = ((-1 * this.props.details.currentValue) / 10) + 2;
+            return (
+                <circle r={radius} fill="red" />
+            );
+        }
+
+        let radius = this.props.details.currentValue / 10;
+        return (
+            <circle r={radius} fill='yellow' stroke='green' strokeWidth='2' />
+        );
+    }
+
     renderPlanet() {
         if (this.props.details.seenBefore === false) {
             return (
@@ -99,6 +125,9 @@ class Planet extends React.Component {
         switch (this.props.planetView) {
             case PlanetViewEnum.NORMAL:
                 return this.renderNormalViewPlanet();
+
+            case PlanetViewEnum.PLANET_VALUE:
+                return this.renderPlanetValueViewPlanet();
 
             case PlanetViewEnum.NO_INFO:
                 return (

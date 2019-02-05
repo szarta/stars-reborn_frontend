@@ -43,10 +43,20 @@ const spaceReducer = (space = null, action) => {
         default:
             return space;
     }
-}
+};
+
+const ownedPlanetsReducer = (planets = null, action) => {
+    switch (action.type) {
+        case 'FETCH_OWNED_PLANETS':
+            return action.payload;
+        default:
+            return planets;
+    }
+};
 
 export default combineReducers({
     space: spaceReducer,
+    ownedPlanets: ownedPlanetsReducer,
     planetView: planetViewReducer,
     zoomLevel: zoomLevelReducer,
     selectedObject: selectedSpaceObjectReducer,

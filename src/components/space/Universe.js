@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 
 import { retrieveSpace } from '../../actions';
 import Planet from './Planet';
+import Scans from './Scans';
 import { zoomLevelToMultiplier } from '../../gameUtils';
 
 

@@ -37,14 +37,9 @@ class PlanetPicture extends React.Component {
 
         if (this.props.focused) {
             if ('planet' in this.props.focused) {
-                console.log(this.props.focused);
-                console.log(this.props.planets);
-
                 let result = this.props.planets.filter(planet => {
                     return planet.id === this.props.focused.planet;
                 });
-
-                console.log(result);
 
                 if (result.length === 1) {
                     let planet_name = result[0].name;
@@ -54,15 +49,15 @@ class PlanetPicture extends React.Component {
                                 {planet_name}
                             </div>
                             <div className="content">
-                            <div className="ui centered image" style={{maxWidth:'100px'}}>
-                                <img 
-                                    src={getImagePath(result[0].id)}
-                                    alt="The planet"/>
-                            </div>
-                            <div className="ui vertical buttons">
-                                <div className="ui basic button">Previous</div>
-                                <div className="ui basic button">Next</div>
-                            </div>
+                                <div className="ui centered image" style={{maxWidth:'100px'}}>
+                                    <img
+                                        src={getImagePath(result[0].id)}
+                                        alt="The planet"/>
+                                </div>
+                                <div className="ui vertical buttons">
+                                    <div className="ui basic button">Previous</div>
+                                    <div className="ui basic button">Next</div>
+                                </div>
                             </div>
                         </div>
                     );

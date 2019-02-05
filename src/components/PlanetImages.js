@@ -19,7 +19,6 @@
  *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  *  DEALINGS IN THE SOFTWARE.
  */
-
 import p001 from '../gfx/planets/p001.png';
 import p002 from '../gfx/planets/p002.png';
 import p003 from '../gfx/planets/p003.png';
@@ -60,4 +59,4 @@ const planetImageArray = [
 
 export const getImagePath = (id) => {
     return planetImageArray[(id * 3) % planetImageArray.length];
-}
+};

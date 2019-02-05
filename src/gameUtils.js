@@ -31,35 +31,35 @@ export const PlanetViewEnum = {
 export const zoomLevelToMultiplier = (level) => {
     let zoomMultiplier;
     switch(level) {
-        case "25":
+        case '25':
             zoomMultiplier = 0.25;
             break;
 
-        case "38":
+        case '38':
             zoomMultiplier = 0.38;
             break;
 
-        case "50":
+        case '50':
             zoomMultiplier = 0.50;
             break;
 
-        case "100":
+        case '100':
             zoomMultiplier = 1.0;
             break;
 
-        case "125":
+        case '125':
             zoomMultiplier = 1.25;
             break;
 
-        case "150":
+        case '150':
             zoomMultiplier = 1.5;
             break;
 
-        case "200":
+        case '200':
             zoomMultiplier = 2.0;
             break;
 
-        case "400":
+        case '400':
             zoomMultiplier = 4.0;
             break;
 
@@ -68,4 +68,4 @@ export const zoomLevelToMultiplier = (level) => {
     }
 
     return zoomMultiplier;
-}
+};

@@ -62,7 +62,7 @@ class Universe extends React.Component {
             </div>
         );
     }
-};
+}
 
 const mapStateToProps = (state) => {
     let zoomMultiplier = zoomLevelToMultiplier(state.zoomLevel);

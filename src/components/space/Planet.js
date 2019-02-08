@@ -30,10 +30,11 @@ class Planet extends React.Component {
         let selection = { 'planet': this.props.details.id };
 
         if (this.props.selectedId === this.props.details.id) {
-            //console.log("focusing the id " + this.props.details.id );
+            console.log("focusing the id " + this.props.details.id );
+            console.log('x: ' + this.props.details.loc.x + ' y:' + this.props.details.loc.y);
             this.props.focusSpaceObject(selection);
         } else {
-            //console.log("selecting the id " + this.props.details.id );
+            console.log("selecting the id " + this.props.details.id );
             this.props.selectSpaceObject(selection);
         }
     }
@@ -48,7 +49,7 @@ class Planet extends React.Component {
     }
 
     showName() {
-        if (this.props.zoomLevel > 50) {
+        if (this.props.zoomLevel > 50 && this.props.showPlanetNames) {
             return true;
         } else {
             return false;
@@ -205,6 +206,7 @@ const mapStateToProps = (state) => {
         focusedId: focusedId,
         zoomLevel: parseInt(state.zoomLevel),
         zoomMultiplier: zoomMultiplier,
+        showPlanetNames: state.showPlanetNames,
         planetView: parseInt(state.planetView)
     };
 };

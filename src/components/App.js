@@ -22,6 +22,7 @@
 import React from 'react';
 import Universe from './space/Universe';
 import SpaceMenu from './SpaceMenu';
+import SpaceStatus from './SpaceStatus';
 import PlanetPicture from './PlanetPicture';
 
 
@@ -37,6 +38,7 @@ class App extends React.Component {
                         <div className="column">
                             <SpaceMenu />
                             <Universe />
+                            <SpaceStatus />
                         </div>
                     </div>
                 </div>

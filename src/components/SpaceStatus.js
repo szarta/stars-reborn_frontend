@@ -21,39 +21,53 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { zoomLevelToMultiplier } from '../../gameUtils';
+import { getPlanetById } from '../gameUtils';
 
 
-class Scans extends React.Component {
-    renderScans() {
-        if (!this.props.space) {
-            return null;
-        }
-
-        return this.props.space.scans.map((scan) => {
-            let xPos = (scan.origin.x - 975) * this.props.zoomMultiplier;
-            let yPos = (scan.origin.y - 975) * this.props.zoomMultiplier;
-            let radius = (scan.radius) * this.props.zoomMultiplier;
-
-            return (
-                <circle radius={radius} fill='red' transform={ `translate(${xPos}, ${yPos})` } />
-            );
-        });
-    }
-
+class SpaceStatus extends React.Component {
     render() {
-        return this.renderScans();
+        return (
+            <div className="ui menu">
+                <div className="item">
+                    ID: {this.props.id}
+                </div>
+                <div className="item">
+                    X: {this.props.x}
+                </div>
+                <div className="item">
+                    Y: {this.props.y}
+                </div>
+                <div className="item">
+                    Name: {this.props.name}
+                </div>
+            </div>
+        );
     }
 }
 
 const mapStateToProps = (state) => {
-    let zoomMultiplier = zoomLevelToMultiplier(state.zoomLevel);
+    let id = 0;
+    let x = 0;
+    let y = 0;
+    let name = 0;
+
+    if (state.selectedObject && 'planet' in state.selectedObject) {
+        id = state.selectedObject.planet;
+        let planet = getPlanetById(state, id);
+
+        if (planet) {
+            name = planet.name;
+            x = planet.loc.x;
+            y = planet.loc.y;
+        }
+    }
 
     return {
-        zoomLevel: parseInt(state.zoomLevel),
-        zoomMultiplier: zoomMultiplier,
-        space: state.space
+        id: id,
+        x: x,
+        y: y,
+        name: name
     };
 };
 
-export default connect(mapStateToProps)(Scans);
+export default connect(mapStateToProps)(SpaceStatus);

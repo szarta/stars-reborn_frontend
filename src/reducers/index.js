@@ -75,11 +75,21 @@ const ownedPlanetsReducer = (planets = null, action) => {
     }
 };
 
+const showPlanetNamesReducer = (names = true, action) => {
+    switch (action.type) {
+        case 'MODIFY_SHOW_PLANET_NAMES':
+            return action.payload;
+        default:
+            return names;
+    }
+};
+
 export default combineReducers({
     space: spaceReducer,
     ownedPlanets: ownedPlanetsReducer,
     planetView: planetViewReducer,
     zoomLevel: zoomLevelReducer,
     selectedObject: selectedSpaceObjectReducer,
-    focusedObject: focusedSpaceObjectReducer
+    focusedObject: focusedSpaceObjectReducer,
+    showPlanetNames: showPlanetNamesReducer
 });

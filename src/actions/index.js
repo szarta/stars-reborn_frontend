@@ -32,6 +32,8 @@ export const retrieveSpace = () => async dispatch => {
     );
 
     dispatch( { type: 'FETCH_SPACE', payload: response.data } );
+    dispatch( { type: 'SELECT_OBJECT', payload: { planet: parseInt(response.data.homeworld) } } );
+    dispatch( { type: 'FOCUS_OBJECT', payload: { planet: parseInt(response.data.homeworld) } } );
 };
 
 export const retrieveOwnedPlanets = () => async dispatch => {
@@ -67,6 +69,14 @@ export const modifyZoomLevel = (zoomLevel) => {
         payload: zoomLevel
     };
 };
+
+export const modifyShowPlanetNames = (showPlanetNames) => {
+    return {
+        type: 'MODIFY_SHOW_PLANET_NAMES',
+        payload: showPlanetNames
+    };
+};
+
 
 export const modifyPlanetView = (planetViewType) => {
     return {

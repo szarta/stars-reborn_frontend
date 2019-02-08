@@ -28,6 +28,18 @@ export const PlanetViewEnum = {
     NO_INFO: 6,
 };
 
+export const getPlanetById = (state, id) => {
+    if (state.space) {
+        let result = state.space.planets.filter(planet => {
+            return planet.id === id;
+        });
+
+        return result[0];
+    }
+
+    return null;
+};
+
 export const zoomLevelToMultiplier = (level) => {
     let zoomMultiplier;
     switch(level) {

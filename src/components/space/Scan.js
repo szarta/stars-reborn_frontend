@@ -19,44 +19,30 @@
  *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  *  DEALINGS IN THE SOFTWARE.
  */
-import p001 from '../gfx/planets/p001.png';
-import p002 from '../gfx/planets/p002.png';
-import p003 from '../gfx/planets/p003.png';
-import p004 from '../gfx/planets/p004.png';
-import p005 from '../gfx/planets/p005.png';
-import p007 from '../gfx/planets/p007.png';
-import p009 from '../gfx/planets/p009.png';
-import p010 from '../gfx/planets/p010.png';
-import p011 from '../gfx/planets/p011.png';
-import p012 from '../gfx/planets/p012.png';
-import p013 from '../gfx/planets/p013.png';
-import p014 from '../gfx/planets/p014.png';
-import p015 from '../gfx/planets/p015.png';
-import p016 from '../gfx/planets/p016.png';
-import p017 from '../gfx/planets/p017.png';
-import p018 from '../gfx/planets/p018.png';
-import p019 from '../gfx/planets/p019.png';
+import React from 'react';
+import { connect } from 'react-redux';
+import { zoomLevelToMultiplier } from '../../gameUtils';
 
-const planetImageArray = [
-    p001,
-    p002,
-    p003,
-    p004,
-    p005,
-    p007,
-    p009,
-    p010,
-    p011,
-    p012,
-    p013,
-    p014,
-    p015,
-    p016,
-    p017,
-    p018,
-    p019
-];
 
-export const getPlanetImagePath = (id) => {
-    return planetImageArray[(id * 3) % planetImageArray.length];
+class Scan extends React.Component {
+    render() {
+        let xPos = (this.props.details.origin.x - 975) * this.props.zoomMultiplier;
+        let yPos = (this.props.details.origin.y - 975) * this.props.zoomMultiplier;
+        let radius = (this.props.details.radius) * this.props.zoomMultiplier;
+        let color = (this.props.details.penetrating) ? '#606000' : '#7f0000';
+
+        return (
+            <circle r={radius} fill={color} transform={ `translate(${xPos}, ${yPos})` } />
+        );
+    }
+}
+
+const mapStateToProps = (state) => {
+    let zoomMultiplier = zoomLevelToMultiplier(state.zoomLevel);
+
+    return {
+        zoomMultiplier: zoomMultiplier
+    };
 };
+
+export default connect(mapStateToProps)(Scan);

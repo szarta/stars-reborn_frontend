@@ -24,13 +24,31 @@ import { connect } from 'react-redux';
 
 import { retrieveSpace } from '../../actions';
 import Planet from './Planet';
-import Scans from './Scans';
+import Fleet from './Fleet';
+import Scan from './Scan';
 import { zoomLevelToMultiplier } from '../../gameUtils';
 
 
 class Universe extends React.Component {
     componentDidMount() {
         this.props.retrieveSpace();
+    }
+
+    renderFleets() {
+        return this.props.space.fleets.map((fleet) => {
+            return (
+                <Fleet key={fleet.id} details={fleet} />
+            );
+        });
+
+    }
+
+    renderScans() {
+        return this.props.space.scans.map((scan, index) => {
+            return (
+                <Scan key={index} details={scan} />
+            );
+        });
     }
 
     renderPlanets() {
@@ -54,10 +72,12 @@ class Universe extends React.Component {
         const spaceHeight = this.props.space.bound.yMax * this.props.zoomMultiplier + 50;
 
         return (
-            <div style={{overflow: 'auto', height: '80%'}}>
+            <div style={{overflow: 'auto', height: '600px'}}>
                 <svg width={spaceWidth} height={spaceHeight}>
                     <rect x="0" y="0" width={spaceWidth} height={spaceHeight} fill="black" />
+                    {this.renderScans()}
                     {this.renderPlanets()}
+                    {this.renderFleets()}
                 </svg>
             </div>
         );

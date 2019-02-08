@@ -21,13 +21,16 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { modifyPlanetView, modifyZoomLevel } from '../actions';
+import { modifyPlanetView, modifyZoomLevel, modifyShowPlanetNames } from '../actions';
 import { PlanetViewEnum } from '../gameUtils';
 
 
 class SpaceMenu extends React.Component {
     zoomLevelChanged = (e) => { this.props.modifyZoomLevel(e.target.value); }
     planetViewChanged = (e) => { this.props.modifyPlanetView(e.target.value); }
+    showPlanetNamesChanged = (e) => {
+        this.props.modifyShowPlanetNames(e.target.checked);
+    }
 
     render() {
         return (
@@ -50,17 +53,21 @@ class SpaceMenu extends React.Component {
                     <option value="200">200%</option>
                     <option value="400">400%</option>
                 </select>
-
+                <div className="ui checkbox">
+                    <input type="checkbox" name="Planet Name Overlay" checked={this.props.showPlanetNames} onChange={this.showPlanetNamesChanged} />
+                    <label>Show Planet Names</label>
+                </div>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         zoomLevel: state.zoomLevel,
-        planetView: state.planetView
+        planetView: state.planetView,
+        showPlanetNames: state.showPlanetNames,
     };
 };
 
-export default connect(mapStateToProps, { modifyPlanetView, modifyZoomLevel } )(SpaceMenu);
+export default connect(mapStateToProps, { modifyPlanetView, modifyZoomLevel, modifyShowPlanetNames } )(SpaceMenu);

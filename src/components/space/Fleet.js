@@ -46,7 +46,14 @@ class Fleet extends React.Component {
 
     getQuantity() {
         return (
-            <text style={{'fill': 'white', 'stroke': 'none', 'fontSize': '10px', 'textAnchor': 'middle'}} >
+            <text
+                style={{
+                    fill: '#ffffff',
+                    stroke: 'none',
+                    fontSize: '10px',
+                    fontFamily: 'Arial',
+                    textAnchor: 'middle'}}
+            >
                 34
             </text>
         );
@@ -82,7 +89,7 @@ class Fleet extends React.Component {
 
         // we have 3 sides of the triangle, want the angle needed to translate
         // the point at translate X to the point at target X
-        
+
         // law of cosines
 
         let upper = (2*(distanceToTarget * distanceToTarget)) - (distanceFromProjectedToTarget * distanceFromProjectedToTarget);

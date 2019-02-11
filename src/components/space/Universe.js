@@ -26,6 +26,7 @@ import { retrieveSpace } from '../../actions';
 import Planet from './Planet';
 import Fleet from './Fleet';
 import Scan from './Scan';
+import Wormhole from './Wormhole';
 import { zoomLevelToMultiplier } from '../../gameUtils';
 
 
@@ -59,6 +60,14 @@ class Universe extends React.Component {
         });
     }
 
+    renderWormholes() {
+        return this.props.space.wormholes.map( (wormhole) => {
+            return (
+                <Wormhole key={wormhole.id} details={wormhole} />
+            );
+        });
+    }
+
     render() {
         if (!this.props.space) {
             return (
@@ -78,6 +87,7 @@ class Universe extends React.Component {
                     {this.renderScans()}
                     {this.renderPlanets()}
                     {this.renderFleets()}
+                    {this.renderWormholes()}
                 </svg>
             </div>
         );
